@@ -1,0 +1,26 @@
+﻿@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using HMT.Web.Server
+@*I need to specify where I moved MainLayout.razor from its default location of HMT.Web.Server.Shared folder*@
+@using HMT.Web.Server.Features.Shared.Layout
+@*I need to specify where I moved NavMenu.razor from its default location of HMT.Web.Server.Shared folder*@
+@using HMT.Web.Server.Features.Shared.Layout.NavMenu
+@*I need to specify where I moved SurveyPrompt.razor from its default location of HMT.Web.Server.Shared folder*@
+@using HMT.Web.Server.Features.Shared.SurveyPrompt
+
+@*Making MediatR available in all Pages*@
+@using MediatR
+@inject IMediator Mediator
+
+@using HMT.Web.Server.Models
+@using HMT.Web.Server.Models.Entities
+
+@using Microsoft.AspNetCore.Components
+
+

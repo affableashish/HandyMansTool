@@ -1,0 +1,8 @@
+﻿@page "/"
+@namespace HMT.Web.Server.Features
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "./Shared/Layout/_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />
