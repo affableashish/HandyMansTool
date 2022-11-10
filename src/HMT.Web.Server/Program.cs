@@ -8,6 +8,8 @@ using HMT.Web.Server.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using HMT.Web.Server.Services.Identity;
 using HMT.Web.Server.Services;
+using Microsoft.AspNetCore.Identity;
+using HMT.Web.Server.Areas.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,12 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
 builder.Services.AddDbContext<HMTDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MMTConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HMTConnection")));
+
+builder.Services.AddDefaultIdentity<HMTUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<HMTDbContext>();
+
+builder.Services.AddScoped<TokenProvider>();
 
 builder.Services.AddSingleton<IInMemoryDatabase, InMemoryDatabase>();
 
@@ -57,6 +64,8 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 
