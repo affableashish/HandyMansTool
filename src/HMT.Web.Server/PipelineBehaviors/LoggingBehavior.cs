@@ -24,7 +24,7 @@ namespace HMT.Web.Server.PipelineBehaviors
             _identityService = identityService;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             //Request
             var requestName = typeof(TRequest).Name;

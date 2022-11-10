@@ -24,14 +24,13 @@ namespace HMT.IntegrationTests
         // Respawn is a small utility to help in resetting test databases to a clean state.
         // Instead of deleting data at the end of a test or rolling back a transaction,
         // Respawn resets the database back to a clean checkpoint by intelligently deleting data from tables.
-        private readonly Checkpoint _checkpoint; // <-- Comes from Respawn library. 
+        private Respawner _respawner; // <-- Comes from Respawn library. 
 
         public TestFixture()
         {
             _factory = new MMTTestApplicationFactory();
             _configuration = _factory.Services.GetRequiredService<IConfiguration>();
             _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
-            _checkpoint = new Checkpoint();
         }
 
         // Whenever this method is called:
@@ -73,9 +72,11 @@ namespace HMT.IntegrationTests
             return ExecuteScopeAsync(sp => action(sp.GetService<HMTDbContext>()));
         }
 
-        public Task InitializeAsync()
+        public async Task InitializeAsync()
         {
-            return _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _respawner = await Respawner.CreateAsync(connectionString);
+            await _respawner.ResetAsync(connectionString);
         }
 
         public Task DisposeAsync()
